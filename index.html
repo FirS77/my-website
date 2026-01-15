@@ -1,32 +1,591 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <title>我的网站</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>全国大学生电子设计竞赛｜寒假集训营</title>
+  <meta name="description" content="电赛寒假培养与选拔：任务制训练、阶段考核、组队筛选、资源支持。" />
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f7fa;
-      margin: 0;
-      padding: 0;
+    :root{
+      --bg:#0b1220;
+      --panel:#0f1b33;
+      --card:#101f3d;
+      --muted:#b7c4e1;
+      --text:#eaf0ff;
+      --brand:#6aa7ff;
+      --brand2:#7cf1d0;
+      --warn:#ffcc66;
+      --ok:#7cf1d0;
+      --bad:#ff6a7a;
+      --border:rgba(255,255,255,.10);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
     }
-    .container {
-      max-width: 800px;
-      margin: 80px auto;
-      background: white;
-      padding: 40px;
-      border-radius: 8px;
-      box-shadow: 0 8px 24px rgba(0,0,0,.08);
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC","Hiragino Sans GB","Microsoft YaHei", Arial, "Noto Sans CJK SC", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 15% 10%, rgba(106,167,255,.22), transparent 60%),
+        radial-gradient(900px 500px at 70% 15%, rgba(124,241,208,.18), transparent 60%),
+        radial-gradient(900px 600px at 60% 90%, rgba(255,204,102,.10), transparent 60%),
+        var(--bg);
+      line-height:1.6;
     }
-    h1 { margin-top: 0; }
+    a{color:inherit; text-decoration:none}
+    .container{max-width:1100px; margin:0 auto; padding:22px}
+    .nav{
+      position:sticky; top:0; z-index:99;
+      backdrop-filter: blur(10px);
+      background: rgba(11,18,32,.55);
+      border-bottom:1px solid var(--border);
+    }
+    .nav-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding:12px 22px;
+      max-width:1100px; margin:0 auto;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:700; letter-spacing:.2px;
+    }
+    .logo{
+      width:34px; height:34px; border-radius:12px;
+      background: linear-gradient(135deg, var(--brand), var(--brand2));
+      box-shadow: 0 8px 22px rgba(106,167,255,.22);
+    }
+    .nav-links{
+      display:flex; gap:14px; flex-wrap:wrap;
+      font-size:14px; color:var(--muted);
+    }
+    .nav-links a{padding:8px 10px; border-radius:12px}
+    .nav-links a:hover{background: rgba(255,255,255,.06); color:var(--text)}
+    .cta{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+    }
+    .btn{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      padding:10px 14px;
+      border-radius: 14px;
+      font-weight:600;
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      display:inline-flex; align-items:center; gap:10px;
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.10)}
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(106,167,255,.95), rgba(124,241,208,.92));
+      color:#04101f;
+      border-color: transparent;
+    }
+    .btn.primary:hover{filter:saturate(1.05)}
+    .hero{
+      padding:36px 0 14px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:18px;
+      align-items:stretch;
+    }
+    .panel{
+      background: rgba(15,27,51,.72);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .hero-left{padding:24px 24px 22px}
+    .kicker{
+      display:inline-flex; align-items:center; gap:8px;
+      color:var(--muted); font-weight:600; font-size:13px;
+      padding:7px 10px; border:1px solid var(--border);
+      border-radius: 999px; background: rgba(255,255,255,.04);
+    }
+    h1{margin:14px 0 10px; font-size:36px; line-height:1.2}
+    .sub{color:var(--muted); font-size:16px; max-width:60ch}
+    .hero-actions{margin-top:16px; display:flex; gap:10px; flex-wrap:wrap}
+    .chips{margin-top:16px; display:flex; gap:10px; flex-wrap:wrap}
+    .chip{
+      font-size:13px; color:var(--muted);
+      padding:8px 10px; border-radius: 999px;
+      border:1px dashed rgba(255,255,255,.18);
+      background: rgba(255,255,255,.03);
+    }
+    .hero-right{padding:16px}
+    .stats{
+      display:grid; gap:10px;
+    }
+    .stat{
+      padding:14px; border-radius: 16px;
+      background: rgba(16,31,61,.70);
+      border:1px solid var(--border);
+    }
+    .stat b{display:block; font-size:18px; margin-bottom:4px}
+    .stat span{color:var(--muted); font-size:13px}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:14px;
+      margin:18px 0 28px;
+    }
+    .card{
+      grid-column: span 6;
+      padding:18px;
+      border-radius: var(--radius);
+      background: rgba(16,31,61,.72);
+      border:1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .card h2{margin:0 0 10px; font-size:18px}
+    .muted{color:var(--muted)}
+    .list{
+      margin:10px 0 0; padding:0; list-style:none;
+      display:grid; gap:10px;
+    }
+    .li{
+      display:flex; gap:10px; align-items:flex-start;
+      padding:12px; border-radius: 16px;
+      background: rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .dot{
+      width:10px; height:10px; border-radius: 999px;
+      margin-top:7px;
+      background: var(--brand);
+      flex:0 0 auto;
+    }
+    .tag{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:12px;
+      padding:6px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      margin-right:8px;
+      margin-top:6px;
+    }
+    .timeline{
+      margin-top:10px;
+      display:grid; gap:10px;
+    }
+    .step{
+      display:flex; gap:12px;
+      padding:12px; border-radius: 16px;
+      background: rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .num{
+      width:34px; height:34px; border-radius: 12px;
+      display:flex; align-items:center; justify-content:center;
+      font-weight:800;
+      background: rgba(106,167,255,.18);
+      border:1px solid rgba(106,167,255,.35);
+      flex:0 0 auto;
+    }
+    .step b{display:block}
+    .step small{color:var(--muted)}
+    .full{grid-column: span 12}
+    .half{grid-column: span 6}
+    .third{grid-column: span 4}
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 10px;
+      border-radius: 999px;
+      font-size:12px; font-weight:700;
+      background: rgba(124,241,208,.14);
+      border:1px solid rgba(124,241,208,.30);
+      color: #d7fff5;
+    }
+    .badge.warn{
+      background: rgba(255,204,102,.14);
+      border:1px solid rgba(255,204,102,.30);
+      color: #fff2d7;
+    }
+    .badge.bad{
+      background: rgba(255,106,122,.14);
+      border:1px solid rgba(255,106,122,.30);
+      color: #ffe0e4;
+    }
+    .table{
+      width:100%;
+      border-collapse: collapse;
+      overflow:hidden;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.02);
+    }
+    .table th,.table td{
+      padding:12px 12px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      text-align:left;
+      font-size:14px;
+      vertical-align:top;
+    }
+    .table th{color: var(--muted); font-weight:700}
+    .table tr:last-child td{border-bottom:none}
+    .callout{
+      padding:14px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+    }
+    .form{
+      display:grid; gap:10px; margin-top:10px;
+    }
+    .row{display:grid; gap:10px; grid-template-columns: 1fr 1fr}
+    input, select, textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(11,18,32,.55);
+      color: var(--text);
+      outline:none;
+    }
+    textarea{min-height:96px; resize: vertical}
+    input::placeholder, textarea::placeholder{color: rgba(183,196,225,.70)}
+    .footer{
+      margin:26px 0 40px;
+      color: rgba(183,196,225,.85);
+      font-size:13px;
+      display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+    .sep{height:1px; background: rgba(255,255,255,.10); margin:18px 0}
+    @media (max-width: 920px){
+      .hero{grid-template-columns: 1fr}
+      h1{font-size:30px}
+      .card{grid-column: span 12}
+      .third,.half{grid-column: span 12}
+      .row{grid-template-columns: 1fr}
+      .nav-links{display:none}
+    }
   </style>
 </head>
+
 <body>
-  <div class="container">
-    <h1>欢迎来到我的网站</h1>
-    <p>这是一个通过 Vercel 部署的公开网站。</p>
-    <p>任何人点击链接都可以访问。</p>
+  <div class="nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          电赛寒假集训营<br/>
+          <span style="font-size:12px;color:var(--muted);font-weight:600;">任务制培养 · 阶段考核 · 组队筛选</span>
+        </div>
+      </div>
+      <div class="nav-links" aria-label="导航">
+        <a href="#about">培养目标</a>
+        <a href="#plan">训练安排</a>
+        <a href="#tasks">任务与考核</a>
+        <a href="#apply">报名入口</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="cta">
+        <a class="btn" href="#apply">报名/咨询</a>
+        <a class="btn primary" href="#tasks">查看考核任务</a>
+      </div>
+    </div>
   </div>
+
+  <div class="container">
+    <section class="hero">
+      <div class="panel hero-left">
+        <div class="kicker">全国大学生电子设计竞赛 · 本科生组 · 寒假培养与选拔</div>
+        <h1>用“可交付”的训练，把人筛出来，把队伍练出来</h1>
+        <p class="sub">
+          面向新一届电赛队伍：以<strong>任务制学习</strong>为核心，每周输出可验收成果，进行<strong>阶段测评</strong>与<strong>组队筛选</strong>。
+          适合想系统入门嵌入式/模拟电路/测控算法/工程实现的同学。
+        </p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#apply">立即报名（推荐先占位）</a>
+          <a class="btn" href="#plan">查看训练节奏</a>
+          <a class="btn" href="#about">了解筛选机制</a>
+        </div>
+        <div class="chips">
+          <div class="chip">产出导向：每周提交代码/报告/演示视频</div>
+          <div class="chip">过程可追踪：打卡+PR/提交记录</div>
+          <div class="chip">公平筛选：统一题目+统一评分表</div>
+        </div>
+      </div>
+
+      <aside class="panel hero-right">
+        <div class="stats">
+          <div class="stat">
+            <b>培养周期</b>
+            <span>寒假 3–5 周（可按学校安排微调）</span>
+          </div>
+          <div class="stat">
+            <b>方向覆盖</b>
+            <span>嵌入式、模拟/电源、传感测量、算法与调试</span>
+          </div>
+          <div class="stat">
+            <b>选拔原则</b>
+            <span>以交付质量与稳定性为主，兼顾协作与学习能力</span>
+          </div>
+          <div class="stat">
+            <b>你需要准备</b>
+            <span>Windows 笔电 + 基础C语言/电路基础（不会也能学，但必须肯练）</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <div class="grid">
+      <section id="about" class="card half">
+        <h2>培养目标</h2>
+        <p class="muted">不是“听课式培训”，而是“工程交付式训练”。核心是把能力拆成可检验的里程碑。</p>
+        <ul class="list">
+          <li class="li"><span class="dot"></span><div><b>能独立做出一个可稳定运行的电赛小作品</b><div class="muted">从硬件搭建、程序编写到调试与文档交付。</div></div></li>
+          <li class="li"><span class="dot"></span><div><b>掌握电赛常见模块与调试套路</b><div class="muted">采样、滤波、PID、显示、通信、电源、抗干扰、可靠性。</div></div></li>
+          <li class="li"><span class="dot"></span><div><b>形成团队协作习惯</b><div class="muted">版本管理/提交记录、问题分解、周例会汇报与复盘。</div></div></li>
+        </ul>
+      </section>
+
+      <section class="card half">
+        <h2>筛选机制（把人筛出来）</h2>
+        <p class="muted">以“过程 + 结果”的量化评分为主，减少主观印象。</p>
+        <div class="callout">
+          <span class="badge">过程分 40%</span>
+          <span class="badge warn">阶段测评 40%</span>
+          <span class="badge bad">协作与复盘 20%</span>
+          <div class="sep"></div>
+          <div class="muted" style="font-size:14px">
+            过程分：打卡、提交记录、问题闭环；阶段测评：统一任务验收与压力测试；协作复盘：沟通、分工、文档与复盘质量。
+          </div>
+        </div>
+        <div style="margin-top:10px">
+          <span class="tag">统一题目</span>
+          <span class="tag">统一验收脚本</span>
+          <span class="tag">透明评分表</span>
+          <span class="tag">可追溯提交</span>
+        </div>
+      </section>
+
+      <section id="plan" class="card full">
+        <h2>训练安排（建议节奏）</h2>
+        <p class="muted">可按你们学校实际寒假时长调整。下面是典型的 4 周方案。</p>
+        <div class="timeline">
+          <div class="step">
+            <div class="num">W1</div>
+            <div>
+              <b>基础入门与工具链搭建</b>
+              <small>开发环境、C语言/模块化、GPIO/定时器/ADC、示波器/逻辑分析基本用法</small><br/>
+              <span class="tag">交付：环境截图+第一个可运行 Demo</span>
+              <span class="tag">交付：调试记录（问题-定位-解决）</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="num">W2</div>
+            <div>
+              <b>传感测量与信号处理</b>
+              <small>采样、滤波、标定、误差分析；串口/显示；工程结构与参数管理</small><br/>
+              <span class="tag">交付：测量小系统（含标定）</span>
+              <span class="tag">验收：精度/稳定性测试</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="num">W3</div>
+            <div>
+              <b>控制算法与可靠性</b>
+              <small>PID/限幅/抗积分饱和；电源与噪声；异常处理与容错</small><br/>
+              <span class="tag">交付：闭环控制 Demo</span>
+              <span class="tag">验收：压力测试（长时间运行）</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="num">W4</div>
+            <div>
+              <b>综合小作品 + 结营选拔</b>
+              <small>按照电赛交付标准：功能、稳定性、指标、文档、答辩演示</small><br/>
+              <span class="tag">交付：作品视频 + 说明书 + 代码仓库</span>
+              <span class="tag">终测：统一评分表打分</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tasks" class="card full">
+        <h2>任务与考核（可直接贴到 PPT/群公告）</h2>
+        <p class="muted">下面是一套“可落地”的任务清单，你们可以按方向增删。每项都对应可验收的交付物。</p>
+
+        <table class="table" aria-label="任务与验收表">
+          <thead>
+            <tr>
+              <th style="width:16%">阶段</th>
+              <th style="width:28%">任务</th>
+              <th style="width:34%">验收标准</th>
+              <th style="width:22%">提交物</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge">W1</span></td>
+              <td>环境搭建 + 基础外设 Demo</td>
+              <td>能在指定板卡跑通 GPIO/定时器/串口；代码结构清晰</td>
+              <td>代码仓库链接 + 演示视频（30–60s）</td>
+            </tr>
+            <tr>
+              <td><span class="badge">W2</span></td>
+              <td>传感测量 + 标定</td>
+              <td>给出标定方法；误差与稳定性曲线；能重复复现</td>
+              <td>测试数据表 + 简短报告（2–4页）</td>
+            </tr>
+            <tr>
+              <td><span class="badge">W3</span></td>
+              <td>闭环控制 + 保护逻辑</td>
+              <td>可调参；无明显震荡；异常输入能降级/保护</td>
+              <td>代码 + 参数说明 + 压测记录</td>
+            </tr>
+            <tr>
+              <td><span class="badge warn">W4</span></td>
+              <td>综合作品（模拟电赛题交付）</td>
+              <td>功能完整、指标达标、连续运行稳定、答辩表达清楚</td>
+              <td>作品视频 + 说明书 + 答辩PPT</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top:12px" class="callout">
+          <b>评分建议（可直接用）</b>
+          <div class="muted" style="margin-top:6px">
+            功能完成度 30%｜指标达成 25%｜稳定性与鲁棒性 25%｜代码与文档 10%｜协作与复盘 10%
+          </div>
+        </div>
+      </section>
+
+      <section class="card half">
+        <h2>资源与支持</h2>
+        <ul class="list">
+          <li class="li"><span class="dot" style="background:var(--brand2)"></span><div><b>统一开发板/模块清单</b><div class="muted">减少不必要的“器材差异”，提升公平性与复现性。</div></div></li>
+          <li class="li"><span class="dot" style="background:var(--brand2)"></span><div><b>统一验收脚本与测试工况</b><div class="muted">长稳运行、干扰注入、边界条件，避免只在“理想环境”能跑。</div></div></li>
+          <li class="li"><span class="dot" style="background:var(--brand2)"></span><div><b>每周例会 + 复盘模板</b><div class="muted">问题清单、root cause、下周计划、风险点。</div></div></li>
+        </ul>
+      </section>
+
+      <section class="card half">
+        <h2>参与要求</h2>
+        <ul class="list">
+          <li class="li"><span class="dot" style="background:var(--warn)"></span><div><b>时间投入</b><div class="muted">建议每周 ≥ 10–15 小时，至少能保证两次集中训练。</div></div></li>
+          <li class="li"><span class="dot" style="background:var(--warn)"></span><div><b>纪律与产出</b><div class="muted">按时提交；不抄袭；可复现实验；能说清楚你做了什么。</div></div></li>
+          <li class="li"><span class="dot" style="background:var(--warn)"></span><div><b>沟通协作</b><div class="muted">遇到问题先自查与记录，再求助；保持同步与透明。</div></div></li>
+        </ul>
+      </section>
+
+      <section id="apply" class="card full">
+        <h2>报名入口</h2>
+        <p class="muted">
+          你可以先用下面“占位报名”收集信息。要真正把报名信息落到表格里，建议用
+          <b>Google 表单</b> 或 <b>腾讯文档/钉钉表单</b>，把链接替换到按钮即可（无需后端）。
+        </p>
+
+        <div class="callout">
+          <b>推荐：无后端报名方案</b>
+          <div class="muted" style="margin-top:6px">
+            方案1：做一个 Google Form（自动进表格）<br/>
+            方案2：腾讯文档/钉钉表单（同样自动汇总）<br/>
+            你只需要把下面按钮的 href 换成你的表单链接。
+          </div>
+          <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
+            <a class="btn primary" href="https://example.com" target="_blank" rel="noreferrer">打开报名表单（把我换成真实链接）</a>
+            <a class="btn" href="#contact">联系负责人</a>
+          </div>
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="callout">
+          <b>占位报名（示例表单，不会自动入库）</b>
+          <div class="muted" style="margin-top:6px">
+            如果你暂时不想做外部表单，也可以先让大家复制信息发群/发负责人。下面表单点击提交只会弹提示（不保存）。
+          </div>
+
+          <form class="form" onsubmit="return fakeSubmit(event)">
+            <div class="row">
+              <input required placeholder="姓名" name="name" />
+              <input required placeholder="年级 / 专业（例：大二 电气）" name="major" />
+            </div>
+            <div class="row">
+              <select required name="track">
+                <option value="" selected disabled>意向方向（必选）</option>
+                <option>嵌入式/单片机</option>
+                <option>模拟/电源</option>
+                <option>测量与传感</option>
+                <option>算法/控制</option>
+                <option>暂不确定</option>
+              </select>
+              <input required placeholder="联系方式（微信/QQ/手机号）" name="contact" />
+            </div>
+            <textarea placeholder="基础情况（选填）：会哪些工具/做过哪些项目/想提升什么？" name="profile"></textarea>
+            <button class="btn primary" type="submit">提交占位报名</button>
+            <div class="muted" style="font-size:12px;margin-top:-2px;">
+              提示：占位报名不保存数据。建议替换为真实表单链接以自动汇总。
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section id="faq" class="card full">
+        <h2>FAQ</h2>
+        <div class="grid" style="margin:10px 0 0; gap:12px;">
+          <div class="card third" style="box-shadow:none">
+            <h2 style="font-size:16px;margin-bottom:6px;">零基础能参加吗？</h2>
+            <p class="muted" style="margin:0;">可以，但必须按任务节奏投入时间，按时交付并愿意复盘。</p>
+          </div>
+          <div class="card third" style="box-shadow:none">
+            <h2 style="font-size:16px;margin-bottom:6px;">怎么保证公平？</h2>
+            <p class="muted" style="margin:0;">统一题目、统一验收工况、统一评分表，提交记录可追溯。</p>
+          </div>
+          <div class="card third" style="box-shadow:none">
+            <h2 style="font-size:16px;margin-bottom:6px;">最终怎么组队？</h2>
+            <p class="muted" style="margin:0;">按方向与能力互补组队；以阶段测评分+稳定性为主。</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="card full">
+        <h2>联系方式与通知渠道</h2>
+        <p class="muted">把下面信息改成你们实际的负责人/群号/公众号/飞书文档入口即可。</p>
+        <div class="callout">
+          <div><b>负责人：</b>（姓名）</div>
+          <div><b>微信/QQ：</b>（填写）</div>
+          <div><b>训练群：</b>（群号/二维码链接）</div>
+          <div><b>资料库：</b>（飞书/腾讯文档/网盘链接）</div>
+        </div>
+      </section>
+    </div>
+
+    <div class="footer">
+      <div>© <span id="y"></span> 电赛寒假集训营 · All rights reserved.</div>
+      <div class="muted">页面托管：Vercel｜版本管理：GitHub｜建议使用 Chrome/Edge 访问</div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+
+    function fakeSubmit(e){
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        name: form.name.value.trim(),
+        major: form.major.value.trim(),
+        track: form.track.value,
+        contact: form.contact.value.trim(),
+        profile: form.profile.value.trim()
+      };
+      if(!data.name || !data.major || !data.track || !data.contact){
+        alert("请填写必填项。");
+        return false;
+      }
+      alert(
+        "已提交占位报名（本页面不保存数据）\\n\\n" +
+        "建议：把“打开报名表单”按钮替换为真实表单链接，自动汇总更方便。"
+      );
+      form.reset();
+      return false;
+    }
+  </script>
 </body>
 </html>
